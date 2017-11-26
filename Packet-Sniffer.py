@@ -1,3 +1,4 @@
+ #reference IP table http://www.networksorcery.com/enp/protocol/ip.html
 import socket
 import struct
 import sys
@@ -9,8 +10,7 @@ def ethernet_unpack(pkt):
 #formating mac to AA:BB:CC format
 def mac_address(address_data):
     bytes_string=B':'.join(["%02X" % (ord(x)) for x in address_data])
-    return bytes_string.upper() #maps the mac address in terms of ' aa bb cc dd' i.e 2bytes at a time
-    #return ':'.join(mac_format).upper() #add : between 2 bytes and make the string uppercase
+    return bytes_string.upper()
 
 
 # To unpack the ip packet,
@@ -21,11 +21,18 @@ def mac_address(address_data):
 #Header checksum= 16 bits . hecne H
 #Source IP: 32 bits : hence 4s ( string of size 8*4)
 #Destination IP: 32 bits : hence 4s ( string of size 8*4)
-def IPv4_unpack(pkt):
-    unpack_data= struct.unpack('!BBHHHBBH4s4s', pkt[:20])
+def IP_header_unpack(pkt):
+    unpack_data= struct.unpack('!B B H H H B B H 4s 4s', pkt[:20])
     versionIHL= unpack_data[0] #unpack version and  IP header length
     version= versionIHL >> 4 # to extract version, bit shit by 4 bits as version occupies 4bits in iptable
     header_length =  versionIHL & 0xf
+
+    # differentiated services not unpacked
+
+    total_length=  unpack_data[2]
+    identification= unpack_data[3]
+
+
     print 'versionIHL ' + str(versionIHL)
     print 'version `' + str(version)
     print 'header length '+str(header_length)
@@ -42,7 +49,7 @@ def main():
             print ' error in receiving data'
 
         dest_mac, src_mac,protocol,pkt= ethernet_unpack(raw_data)
-        IPv4_unpack(raw_data)
+        IP_header_unpack(raw_data)
         print ' dest_mac ' +dest_mac
         print 'source_mac '+ src_mac
         print ' protocol '+str(protocol)
