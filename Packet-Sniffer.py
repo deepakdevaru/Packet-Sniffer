@@ -2,10 +2,11 @@
 #Date: 11/26/2017
 
 #Packet Sniffer
+# A simple packet sniffer is designed to sniff packets for various packet attributes like Mac addresses, protocols,
+#source and destination IP address, TTL, IP version, IP header length, total length of the ip header.
 
 
 
- #reference IP table http://www.networksorcery.com/enp/protocol/ip.html
 import socket
 import struct
 import sys
@@ -28,6 +29,7 @@ def mac_address(address_data):
 #Header checksum= 16 bits . hecne H
 #Source IP: 32 bits : hence 4s ( string of size 8*4)
 #Destination IP: 32 bits : hence 4s ( string of size 8*4)
+#reference IP table http://www.networksorcery.com/enp/protocol/ip.html
 def IP_header_unpack(pkt):
     eth_length= 14
     unpack_data= struct.unpack('!B B H H H B B H 4s 4s', pkt[eth_length:20+eth_length])
