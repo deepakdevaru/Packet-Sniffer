@@ -130,39 +130,6 @@ def UDP_packet(header_length,eth_length,pkt):
 
 
 
-
-
-
-
-
-
-
-
-
-
-#getiing flag details:
-#flags takes up 3 bits in the iptable.
-# R (reserved bit) - 1bit size- values( 0- fragment if necessary, 1- do not fragment)
-#MF (more fragments : 1bit  values( 0- this is last fragment, 1- more fragment follow this fragment)
-def get_flags(pkt):
-    flagR = {o: 'o: Reserved bits'}
-    flagDF = {o: 'o: fragment if necessary', 1: '1: do not fragment'}
-    flagMF = {o: 'o: last fragment', 1:' 1: more fragment to follow'}
-
-# calculate R,DF, MF values:
-    #calculate R value:
-    #0x8000 in binary is 1000000000000000 which is 16 bits long. we need to get value at 15th position in the ipheader as 15th postiton corressponds to Reserved bits.
-    #data till 16 bits are made zero and is then bit-shifted to right to 15th postions
-    R= pkt & 0x8000
-    R >>= 15
-    
-
-
-
-
-
-    
-
 def main():
     connection= socket.socket(socket.AF_PACKET, socket.SOCK_RAW,socket.ntohs(3)) #ntohs(3) checks whether the data is in readable format like byte order, big endian
     while True:
