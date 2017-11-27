@@ -43,11 +43,7 @@ def IP_header_unpack(pkt):
     return version, header_length, total_length, identification,ttl,ip_protocol,source_addr,dest_addr
 
 
-
-
 def protocol_decider(proto_number,header_length,eth_length,pkt):
-
-
     if proto_number== 6: #TCP
 
          protocol,source_port,dest_port,sequence,acknum = TCP_protocol (header_length,eth_length,pkt)
@@ -76,12 +72,6 @@ def protocol_decider(proto_number,header_length,eth_length,pkt):
         return
     else:
         return 'some other protocol'
-
-
-
-
-
-
 
 
 #TCP Protocol unpack
@@ -146,12 +136,5 @@ def main():
                + ' TTL: ' +str(ttl)+ ' source ip: ' +str(source_addr)+ ' destination ip: '+ str(dest_addr) + ' ip protocol: '+ str(ip_protocol))
         print''
         print''
-
-
-
-
-
-
-
 
 main()
